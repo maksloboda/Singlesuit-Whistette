@@ -356,23 +356,26 @@ class DeepGreen:
         for i in range(self.K):
             if p.curr_player == 0:
                 comp_mot = best_mot[self.h(p)]
-                print('Ход ', self.a, ': ', self.card[comp_mot], sep='', end='  ')
-                self.PrintAddInf(p)
+                # print('Ход ', self.a, ': ', self.card[comp_mot], sep='', end='  ')
+                # self.PrintAddInf(p)
 
                 ip = InterPosition(p, comp_mot)
-                print('Ход ', self.b, ': ', sep='', end='')
-                user_mot = self.card.index(int(input()))
+                # print('Ход ', self.b, ': ', sep='', end='')
+                card_value = yield self.card[comp_mot]
+                user_mot = self.card.index(card_value)
                 bribe = self.weights[self.K - ip.size // 2]
                 p = Position([], ip, user_mot, bribe)
                 self.card.pop(max(comp_mot, user_mot))
                 self.card.pop(min(comp_mot, user_mot))
             else:
-                print('Ход ', self.b, ': ', sep='', end='')
-                user_mot = self.card.index(int(input()))
+                # print('Ход ', self.b, ': ', sep='', end='')
+                card_value = yield None
+                user_mot = self.card.index(card_value)
                 ip = InterPosition(p, user_mot)
                 comp_mot = best_mot[self.h(ip)]
-                print('Ход ', self.a, ': ', self.card[comp_mot], sep='', end='  ')
-                self.PrintAddInf(ip)
+                yield self.card[comp_mot]
+                # print('Ход ', self.a, ': ', self.card[comp_mot], sep='', end='  ')
+                # self.PrintAddInf(ip)
 
                 bribe = self.weights[self.K - ip.size // 2]
                 p = Position([], ip, comp_mot, bribe)
@@ -380,11 +383,14 @@ class DeepGreen:
                 self.card.pop(min(comp_mot, user_mot))
 
         if self.greater(p.k[0], p.k[1]):
-            print(self.a, 'Победил!')
+            # print(self.a, 'Победил!')
+            pass
         elif p.k[0] == p.k[1]:
-            print('НИЧЬЯ')
+            # print('НИЧЬЯ')
+            pass
         else:
-            print(self.b, 'Победил!')
+            # print(self.b, 'Победил!')
+            pass
 
     def print_cards(self, vector):
         kit0 = []
@@ -406,7 +412,7 @@ class DeepGreen:
                 continue
             vector.append((int(c) + self.a) % 2)
         if len(vector) % 2 != 0:
-            print('MISTAKE!')
+            # print('MISTAKE!')
             return
         self.K = len(vector) // 2
         return vector
@@ -430,14 +436,14 @@ class DeepGreen:
             self.K = int(l[2])
             user_kit = set(map(int, lines[6][11:].split()))
             if (len(user_kit) != self.K):
-                print('MISTAKE!')
+                # print('MISTAKE!')
                 return
             for i in range(2 * self.K):
                 y = 0
                 if (i + 1) in user_kit:
                     y = 1
                 vector.append(y)
-        print('Двоичный вектор:', *[(y + self.a) % 2 for y in vector])
+        # print('Двоичный вектор:', *[(y + self.a) % 2 for y in vector])
 
         l = lines[8].split(' ')
         if len(l) > 1:
@@ -446,5 +452,5 @@ class DeepGreen:
         else:
             self.weights = [1] * self.K
 
-        self.print_cards(vector)
-        self.Play(vector, first_player)
+        # self.print_cards(vector)
+        return self.Play(vector, first_player)
