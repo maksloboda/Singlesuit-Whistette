@@ -361,7 +361,8 @@ class DeepGreen:
 
                 ip = InterPosition(p, comp_mot)
                 # print('Ход ', self.b, ': ', sep='', end='')
-                card_value = yield self.card[comp_mot]
+                yield self.card[comp_mot]
+                card_value = yield None
                 user_mot = self.card.index(card_value)
                 bribe = self.weights[self.K - ip.size // 2]
                 p = Position([], ip, user_mot, bribe)
@@ -425,7 +426,7 @@ class DeepGreen:
         self.b = int(l[2])  # игрок за которого играет user
         self.a = (self.b + 1) % 2  # игрок за которого играет комп
         l = lines[3].split(' ')
-        first_player = (int(l[2]) + self.a) % 2
+        first_player = (int(l[2]) + 1) % 2
 
         vector = []
         l = lines[4].split()

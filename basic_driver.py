@@ -38,11 +38,9 @@ class BasicDriver:
     )
     dg = legacy.deep_green.DeepGreen()
     self.legacy_solver = dg.Game(config.split("\n"))
-    # Always true
-    next(self.legacy_solver)
+    self.computer_move = next(self.legacy_solver) 
     self.field = EMPTY_FIELD
     self.is_finished = False
-    self.computer_move = None
 
   def move_by_player(self, card):
     assert(self.is_user_turn)
@@ -67,6 +65,8 @@ class BasicDriver:
     card = self.computer_move
     try:
       self.computer_move = next(self.legacy_solver)
+      if card is None:
+        card = self.computer_move
       assert(card not in self.user_cards)
       if self.field == EMPTY_FIELD:
         self.field = card
