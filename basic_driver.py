@@ -81,6 +81,9 @@ class BasicDriver:
       self.is_finished = True
     return card
 
+  def can_move_by_player(self) -> bool:
+    return self.is_user_turn
+
   def is_end(self) -> bool:
     return self.is_finished
 
