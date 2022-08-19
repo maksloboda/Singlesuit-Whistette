@@ -10,7 +10,7 @@ vector =
 k = {size}
 user_cards: {user_cards}
 
-weights:
+weights:{weights}
 """
 
 EMPTY_FIELD = -1
@@ -26,7 +26,7 @@ class BasicDriver:
   field: int
   is_finished: bool
 
-  def __init__(self, user_cards_: List[int], is_user_first_: bool) -> None:
+  def __init__(self, user_cards_: List[int], is_user_first_: bool, weights_: List[int] = []) -> None:
     self.user_cards = user_cards_
     self.is_user_turn = is_user_first_
     config = INIT_FORMAT.format(
@@ -34,7 +34,10 @@ class BasicDriver:
       size = len(user_cards_),
       user_cards = " ".join(
         map(str, user_cards_)
-      )
+      ),
+      weights="" if weights_ is None or len(weights_) < 1 else " " + " ".join(
+        map(str, weights_)
+      ),
     )
     dg = legacy.deep_green.DeepGreen()
     self.legacy_solver = dg.Game(config.split("\n"))
