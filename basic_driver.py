@@ -3,7 +3,7 @@ from typing import List, Generator
 
 INIT_FORMAT = \
 """
-type = normal
+type = {version}
 user = 0
 first_player = {first_player}
 vector =
@@ -26,16 +26,17 @@ class BasicDriver:
   field: int
   is_finished: bool
 
-  def __init__(self, user_cards_: List[int], is_user_first_: bool, weights_: List[int] = []) -> None:
+  def __init__(self, user_cards_: List[int], is_user_first_: bool, weights_: List[int] = [], version_: str = "normal") -> None:
     self.user_cards = user_cards_
     self.is_user_turn = is_user_first_
     config = INIT_FORMAT.format(
+      version = version_,
       first_player = 0 if is_user_first_ else 1,
       size = len(user_cards_),
       user_cards = " ".join(
         map(str, user_cards_)
       ),
-      weights="" if weights_ is None or len(weights_) < 1 else " " + " ".join(
+      weights = "" if weights_ is None or len(weights_) < 1 else " " + " ".join(
         map(str, weights_)
       ),
     )

@@ -8,18 +8,21 @@ class GameState:
   current_player: int
   field: int
   weights: List[int]
+  version: str
 
   def __init__(self,
       first_player_set_: List[int],
       second_player_set_: List[int],
       current_player_ : int,
       field_: int,
-      weights_: List[int] = []):
+      weights_: List[int] = [],
+      version_: str = "normal"):
     self.first_player_set = first_player_set_
     self.second_player_set = second_player_set_
     self.current_player = current_player_
     self.field = field_
     self.weights = weights_
+    self.version = version_
 
 def prepare_legacy_solver(state: GameState) -> Tuple[Any, List[int]]:
   """
@@ -58,7 +61,8 @@ def prepare_legacy_solver(state: GameState) -> Tuple[Any, List[int]]:
       )
     ),
     extra_card != [],
-    state.weights
+    state.weights,
+    state.version
   )
 
   if extra_card:
